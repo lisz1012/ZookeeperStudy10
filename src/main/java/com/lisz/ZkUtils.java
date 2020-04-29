@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
 public class ZkUtils {
-    private static final String addresses = "";
+    private static final String addresses = "192.168.1.131:2181,192.168.1.132:2181,192.168.1.133:2181,192.168.1.134:2181/testLock10";
     private static CountDownLatch latch = new CountDownLatch(1);
     private static Watcher watcher = new DefaultWatcher(latch);
 

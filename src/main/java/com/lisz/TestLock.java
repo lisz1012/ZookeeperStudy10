@@ -28,7 +28,15 @@ public class TestLock {
     public void testLock() {
         for (int i = 0; i < 10; i++) {
             String threadName = Thread.currentThread().getName();
-            WatcherCallback watcherCallback = new WatcherCallback(threadName);
+            WatcherCallback watcherCallback = new WatcherCallback(zk, threadName);
+            watcherCallback.tryLock();
+            System.out.println(threadName + " is working ... ");
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            watcherCallback.unLock();
         }
 
         while (true) {
