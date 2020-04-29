@@ -19,7 +19,7 @@ public class WatcherCallback implements AsyncCallback.StringCallback, AsyncCallb
     }
 
     public void tryLock() {
-        zk.create("lock10", threadName.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL, this, "ctx");
+        zk.create("/lock10", threadName.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL, this, "ctx");
         try {
             latch.await();
         } catch (InterruptedException e) {
@@ -54,7 +54,7 @@ public class WatcherCallback implements AsyncCallback.StringCallback, AsyncCallb
             System.out.println(threadName + " gets the lock...");
             latch.countDown();
         } else {
-            zk.exists("/" + children.get(index - 1), this, this, "asd"); //盯住前面一个
+            zk.exists("/" + children.get(index - 1), this, this, "asd"); //盯住前面一个，watcher会触发他检查他是不是第一个，如果是的话就获得锁
         }
     }
 
@@ -72,7 +72,7 @@ public class WatcherCallback implements AsyncCallback.StringCallback, AsyncCallb
             case NodeCreated:
                 break;
             case NodeDeleted:
-                zk.getChildren("/", false, this, "asd");
+                zk.getChildren("/", false, this, "asd");//检查自己是不是第一个
                 break;
             case NodeDataChanged:
                 break;

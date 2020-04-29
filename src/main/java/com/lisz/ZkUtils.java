@@ -16,8 +16,8 @@ public class ZkUtils {
         ZooKeeper zk = null;
         try {
             zk = new ZooKeeper(addresses, 1000, watcher);
-            latch.countDown();
-        } catch (IOException e) {
+            latch.await();
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
         return zk;
